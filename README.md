@@ -1,14 +1,28 @@
-## Image Badges
-
-[![](https://images.microbadger.com/badges/image/andyceo/zcash.svg)](https://microbadger.com/images/andyceo/zcash "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/andyceo/zcash.svg)](https://microbadger.com/images/andyceo/zcash "Get your own version badge on microbadger.com")
+# Zcash full node [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/poma/zcash.svg)](https://hub.docker.com/r/poma/zcash/builds)
 
 ## Download zcash parameters
 
-    sudo docker run --rm -v /data/zcash/.zcash-params:/root/.zcash-params:rw -v /data/zcash/.zcash:/root/.zcash:rw --entrypoint zcash-fetch-params andyceo/zcash
+    docker run --rm -v /data/zcash/.zcash-params:/root/.zcash-params:rw --entrypoint zcash-fetch-params poma/zcash
     
 ## Run
 
-    sudo docker run -d -v /data/zcash/.zcash-params:/root/.zcash-params:ro -v /data/zcash/.zcash:/root/.zcash:rw -h zcash --name zcash andyceo/zcash
+    docker run -d -v /data/zcash/.zcash-params:/root/.zcash-params:ro -v /data/zcash/.zcash:/root/.zcash:rw -p 8232:8232 poma/zcash
+
+## Example docker-compose.yml
+
+```yaml
+version: '2'
+
+services:
+  zcash:
+    image: poma/zcash
+    restart: always
+    ports:
+      - 8232:8232
+    volumes: 
+      - /data/zcash/.zcash-params:/root/.zcash-params:ro
+      - /data/zcash/.zcash:/root/.zcash:rw
+```
 
 ## Check hashrate
 
@@ -25,8 +39,6 @@ The result will be something like
 
 where the first number is the real time taken. Divide 10 by this value (converted into seconds) and you have your hashrate in hashes per second. Of course the advantage to this method is that you can easily run 100 or 1000 loops to average out the run times.
 
-
-
 - see [How do i check my hashrate?](https://forum.z.cash/t/how-do-i-check-my-hashrate/672/11)
 - https://forum.z.cash/t/how-to-check-mining-hashrate-with-zcash-built-in-miner/2810
 - https://forum.z.cash/t/monitor-zcashd-hash-rate-in-daemon-mode/4531/12
@@ -36,10 +48,3 @@ where the first number is the real time taken. Divide 10 by this value (converte
 ## Releases
 
 Will be the same as **Zcash** releases: https://github.com/zcash/zcash/releases
-
-## Volumes
-
-Previously, this image had two volumes: `/root/.zcash-params` and `/root/.zcash`. To simplify volume management, and add ability to store user history with `zcash-cli` and other cli tools, it has been changed to just `/root`. 
-
-- **`/root/.zcash-params`** - contains zcash parameters, that could be obtained with `zcash-fetch-params` command.
-- **`/root/.zcash`** - this is the `zcash.conf` location, also wallet data, blockchain data, etc.
