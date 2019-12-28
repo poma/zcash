@@ -6,7 +6,7 @@
     
 ## Run
 
-    docker run -d -v /data/zcash/.zcash-params:/root/.zcash-params:ro -v /data/zcash/.zcash:/root/.zcash:rw -p 8232:8232 poma/zcash
+    docker run -d -v /data/zcash/.zcash-params:/root/.zcash-params:ro -v /data/zcash/.zcash:/root/.zcash:rw -p 8233:8233 -p 127.0.0.1:8232:8232 poma/zcash
 
 ## Example docker-compose.yml
 
@@ -18,7 +18,8 @@ services:
     image: poma/zcash
     restart: always
     ports:
-      - 8232:8232
+      - 127.0.0.1:8232:8232
+      - 8233:8233
     volumes: 
       - /data/zcash/.zcash-params:/root/.zcash-params:ro
       - /data/zcash/.zcash:/root/.zcash:rw
