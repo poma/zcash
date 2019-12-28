@@ -11,4 +11,5 @@ RUN apt-get update && \
 COPY zcash.conf /root/.zcash/
 VOLUME ["/root/.zcash-params", "/root/.zcash"]
 EXPOSE 8232
+EXPOSE 8233
 ENTRYPOINT ["/usr/bin/zcashd", "-printtoconsole"]
